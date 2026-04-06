@@ -1,0 +1,2 @@
+export DATABASE_URL=postgresql://sunny:password123@127.0.0.1:5435/finance_db 
+npm run dev

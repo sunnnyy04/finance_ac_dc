@@ -10,4 +10,13 @@ export class DashboardController {
       next(error);
     }
   }
+
+  static async getTrends(req: Request, res: Response, next: NextFunction) {
+    try {
+      const trends = await DashboardService.getTrends(req.user!.id, req.user!.role);
+      res.status(200).json({ status: "success", data: trends });
+    } catch (error) {
+      next(error);
+    }
+  }
 }

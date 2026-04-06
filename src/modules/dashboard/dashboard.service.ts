@@ -39,4 +39,21 @@ export class DashboardService {
       categoryWiseTotals: categoryData,
     };
   }
+
+  static async getTrends(userId: number, role: string) {
+    const condition = role === "ADMIN" ? sql`1=1` : eq(records.userId, userId);
+
+    const trends = await db
+      .select({
+        month: sql<string>`TO_CHAR(${records.date}, 'YYYY-MM')`,
+        type: records.type,
+        total: sql<number>`SUM(CAST(${records.amount} AS NUMERIC))`,
+      })
+      .from(records)
+      .where(condition)
+      .groupBy(sql`TO_CHAR(${records.date}, 'YYYY-MM')`, records.type)
+      .orderBy(sql`TO_CHAR(${records.date}, 'YYYY-MM')`);
+
+    return trends;
+  }
 }

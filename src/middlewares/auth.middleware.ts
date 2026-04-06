@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { env } from "../configs/env.js";
 import { ApiError } from "../utils/ApiError.js";
+import "../types/express.d.js";
 
 export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
   const token = req.headers.authorization?.split(" ")[1];

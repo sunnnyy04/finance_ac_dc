@@ -19,3 +19,13 @@ export const updateRecordSchema = z.object({
     notes: z.string().optional(),
   }),
 });
+
+export const findAllRecordsQuerySchema = z.object({
+  query: z.object({
+    startDate: z.string().datetime().optional(),
+    endDate: z.string().datetime().optional(),
+    category: z.string().optional(),
+    type: z.enum(["INCOME", "EXPENSE"]).optional(),
+  }),
+});
+

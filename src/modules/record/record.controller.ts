@@ -13,7 +13,7 @@ export class RecordController {
 
   static async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const allRecords = await RecordService.findAll(req.user!.id, req.user!.role);
+      const allRecords = await RecordService.findAll(req.user!.id, req.user!.role, req.query);
       res.status(200).json({ status: "success", data: allRecords });
     } catch (error) {
       next(error);

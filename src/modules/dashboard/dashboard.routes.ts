@@ -12,4 +12,10 @@ router.get(
   DashboardController.getSummary
 );
 
+router.get(
+  "/trends",
+  requireRoles(["ANALYST", "ADMIN"]),
+  DashboardController.getTrends
+);
+
 export default router;

@@ -1,4 +1,4 @@
-import { eq, and } from "drizzle-orm";
+import { eq, and, gte, lte, SQL } from "drizzle-orm";
 import { db } from "../../db/index.js";
 import { records } from "../../db/schema.js";
 import { ApiError } from "../../utils/ApiError.js";
@@ -16,11 +16,30 @@ export class RecordService {
     return newRecord;
   }
 
-  static async findAll(userId: number, role: string) {
-    if (role === "ADMIN") {
-      return db.select().from(records);
+  static async findAll(userId: number, role: string, filters: any = {}) {
+    const conditions: SQL[] = [];
+
+    if (role !== "ADMIN") {
+      conditions.push(eq(records.userId, userId));
     }
-    return db.select().from(records).where(eq(records.userId, userId));
+
+    if (filters.category) {
+      conditions.push(eq(records.category, filters.category));
+    }
+
+    if (filters.type) {
+      conditions.push(eq(records.type, filters.type));
+    }
+
+    if (filters.startDate) {
+      conditions.push(gte(records.date, new Date(filters.startDate)));
+    }
+
+    if (filters.endDate) {
+      conditions.push(lte(records.date, new Date(filters.endDate)));
+    }
+
+    return db.select().from(records).where(and(...conditions));
   }
 
   static async findById(id: number, userId: number, role: string) {

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { RecordController } from "./record.controller.js";
-import { createRecordSchema, updateRecordSchema } from "./record.validation.js";
+import { createRecordSchema, updateRecordSchema, findAllRecordsQuerySchema } from "./record.validation.js";
 import { requireAuth, requireRoles } from "../../middlewares/auth.middleware.js";
 import { validate } from "../auth/auth.routes.js";
 
@@ -18,6 +18,7 @@ router.post(
 router.get(
   "/",
   requireRoles(["VIEWER", "ANALYST", "ADMIN"]),
+  validate(findAllRecordsQuerySchema),
   RecordController.findAll
 );
 
